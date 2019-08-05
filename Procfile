@@ -1,1 +1,1 @@
-worker: kairibot.py
+worker: python kairibot.py
