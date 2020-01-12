@@ -97,10 +97,10 @@ async def on_message(message):
 
             #카드 그룹을 인자로 주었을 때
             card_group = []
-            regex = re.findall('<([^>]+)>', msg)
+            regex = re.findall('<([^>]+)>', text)
             for group in regex:
                 card_group.append(group[0])
-            msg = re.sub('<[^>]+>', '', msg)
+            text = re.sub('<[^>]+>', '', text)
 
             if not text.strip():
                 params = []
