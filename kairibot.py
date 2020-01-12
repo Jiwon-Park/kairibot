@@ -100,6 +100,7 @@ async def on_message(message):
             regex = re.findall('<([^>]+)>', text)
             for group in regex:
                 card_group.append(group[0])
+                print(group[0])
             text = re.sub('<[^>]+>', '', text)
 
             if not text.strip():
