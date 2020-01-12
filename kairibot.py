@@ -1,4 +1,5 @@
 import discord
+import keep_alive
 from database import discord_token
 def read_kma_db(path):
     '''
@@ -24,9 +25,13 @@ def write_kma_db(path, text):
     write kma db
     '''
     with open(path, "w", encoding='UTF8') as file:
-        file.write(text)
-
-
+        try:
+            file.write(text)
+        except IOError as e:
+            print(e.strerror)
+        except:
+            print('unexpected error')
+            
 
 
 names, arthur_types, descriptions = read_kma_db('./database/KMA_DB.txt')
@@ -138,7 +143,9 @@ async def on_message(message):
                 if name == text and arthur_type == arthur_param:
                     working_index = index
                     break
-            
+            if working_index == 0:
+              await message.channel.send('카드 직업군과 이름을 정확히 입력해 주세요.\n>검색 키워드를 사용해서 나온 결과대로 입력해 주세요.')
+              return
             await message.channel.send('[' + arthur_types[working_index] + ']' + names[working_index] +
                                        '를 편집합니다.\n>설명 뒤에 설명을 붙여서 설명을 갱신해 주세요')
         elif text.startswith('설명'):
@@ -196,4 +203,6 @@ async def on_message(message):
             working_param = ''
             await message.channel.send('취소되었습니다.')
     return
+
+keep_alive.keep_alive()
 client.run(discord_token.token)
