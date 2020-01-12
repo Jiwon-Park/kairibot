@@ -124,8 +124,7 @@ async def on_message(message):
 
             if len(card_group) > 0:
                 temp = [x for x in find_arr if all(group in descriptions[x].split('\n', 1)[0] for group in card_group)]
-            
-            find_arr = temp
+                find_arr = temp
 
             if find_num == 1:
                 sendres = descriptions[find_arr[0]].strip()
