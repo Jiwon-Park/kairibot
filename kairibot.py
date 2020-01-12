@@ -77,7 +77,7 @@ async def on_message(message):
         text = message.content[1:]
         if text.startswith('help'):
             await message.channel.send('''```
->검색 검색어1, 검색어2, ... [용병|부호|도적|가희|스피어|전승|연금][아서|요정...]
+>검색 검색어1, 검색어2, ... [용병|부호|도적|가희|스피어|전승|연금]<카드 그룹>
 >(숫자)
 >추가 [용병|부호|도적|가희|스피어|전승|연금] 카드이름
 >편집 [카드 타입]카드이름
@@ -100,7 +100,6 @@ async def on_message(message):
             regex = re.findall('<([^>]+)>', text)
             for group in regex:
                 card_group.append(group)
-                print(group)
             text = re.sub('<[^>]+>', '', text)
 
             if not text.strip():
