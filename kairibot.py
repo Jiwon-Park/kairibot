@@ -1,5 +1,5 @@
 import discord
-#import keep_alive
+import re
 from database import discord_token
 def read_kma_db(path):
     '''
@@ -77,7 +77,7 @@ async def on_message(message):
         text = message.content[1:]
         if text.startswith('help'):
             await message.channel.send('''```
->검색 검색어1, 검색어2, ... [용병|부호|도적|가희|스피어|전승|연금]
+>검색 검색어1, 검색어2, ... [용병|부호|도적|가희|스피어|전승|연금][아서|요정...]
 >(숫자)
 >추가 [용병|부호|도적|가희|스피어|전승|연금] 카드이름
 >편집 [카드 타입]카드이름
@@ -89,11 +89,19 @@ async def on_message(message):
             text = text[2:].strip()
             find_num = 0
             find_arr = []
-            
+            #아서 종류를 인자로 주었을 때
             arthur_param = False
             if '[' in text and ']' in text:
                 arthur_param = text[text.find('[')+1 : text.find(']')]
                 text = text.replace('[' + arthur_param + ']', '')
+
+            #카드 그룹을 인자로 주었을 때
+            card_group = []
+            regex = re.findall('<([^>]+)>', msg)
+            for group in regex:
+                card_group.append(group[0])
+            msg = re.sub('<[^>]+>', '', msg)
+
             if not text.strip():
                 params = []
             else:
@@ -114,6 +122,10 @@ async def on_message(message):
                     find_num = find_num + 1
                     find_arr.append(index)
 
+            if len(card_group) > 0:
+                temp = [x for x in find_arr if all(group in descriptions[x].split('\n', 1)[0] for group in card_group)]
+            
+            find_arr = temp
 
             if find_num == 1:
                 sendres = descriptions[find_arr[0]].strip()
@@ -221,5 +233,4 @@ async def on_message(message):
             await message.channel.send('취소되었습니다.')
     return
 
-#keep_alive.keep_alive()
 client.run(discord_token.token)
