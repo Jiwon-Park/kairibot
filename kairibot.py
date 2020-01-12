@@ -32,7 +32,19 @@ def write_kma_db(path, text):
         except:
             print('unexpected error')
             
-
+def splitmsg(msg):
+    idx = 0
+    ret = [0]
+    while idx + 2000 < len(msg):
+        idx += 2000
+        for ch in msg[idx::-1]:
+            if ch == '\n':
+                break
+            idx -= 1
+        ret.append(idx)
+    else:
+        ret.append(len(msg))
+    return ret
 
 names, arthur_types, descriptions = read_kma_db('./database/KMA_DB.txt')
 find_arr = []
@@ -113,7 +125,12 @@ async def on_message(message):
             if not sendres:
                 await message.channel.send('결과가 없습니다.')
             else:
-                await message.channel.send(sendres)
+                if len(sendres) >= 2000:
+                    sp = splitmsg(sendres)
+                    for start, end in zip(sp, sp[1:]):
+                        await message.channel.send(sendres[start:end])
+                else:
+                    await message.channel.send(sendres)
         elif text.isdigit() and int(text.strip()) > 0:
             await message.channel.send(descriptions[find_arr[int(text.strip())-1]])
         elif text.startswith('추가'):
