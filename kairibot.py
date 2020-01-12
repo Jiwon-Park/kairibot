@@ -1,5 +1,5 @@
 import discord
-import keep_alive
+#import keep_alive
 from database import discord_token
 def read_kma_db(path):
     '''
@@ -204,5 +204,5 @@ async def on_message(message):
             await message.channel.send('취소되었습니다.')
     return
 
-keep_alive.keep_alive()
+#keep_alive.keep_alive()
 client.run(discord_token.token)
