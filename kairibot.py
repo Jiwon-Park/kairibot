@@ -1,6 +1,7 @@
 import discord
 import re
-from database import discord_token
+import os
+
 def read_kma_db(path):
     '''
     read kma db and return splited result.
@@ -232,4 +233,4 @@ async def on_message(message):
             await message.channel.send('취소되었습니다.')
     return
 
-client.run(discord_token.token)
+client.run(os.environ['API_TOKEN'])
