@@ -232,5 +232,5 @@ async def on_message(message):
             working_param = ''
             await message.channel.send('취소되었습니다.')
     return
-
+print(os.environ['API_TOKEN'])
 client.run(os.environ['API_TOKEN'])
